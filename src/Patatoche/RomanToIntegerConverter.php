@@ -6,6 +6,8 @@ use Hackathon3\Patatoche\ConverterInterface;
 class RomanToIntegerConverter implements ConverterInterface
 {
     protected $romanInteger = array('I' => 1, 'V' => 5, 'X' => 10, 'L' => 50, 'C' => 100, 'D' => 500, 'M' => 1000);
+    private $roman;
+    private $len;
 
     /**
      * Retourne la conversion d'une valeur romaine "élémentaire".
@@ -27,6 +29,44 @@ class RomanToIntegerConverter implements ConverterInterface
      */
     public function convert($roman)
     {
-        // TODO: écrire la fonction de conversion des chiffres romains en décimaux !
+        $this->roman = $roman;
+        $this->len = strlen($roman);
+        $expression = $result = 0;
+        $sign = ' + ';
+
+        for ($i = 0; $i < $this->len; $i++) {
+
+            $me = $this->getValue($i);
+            $right = $this->getValueOnMyRight($i);
+
+            if ($me < $right)
+                $sign = ' - ';
+
+            $expression = $expression . $sign . $me;
+            $sign = ' + ';
+        }
+
+        eval( '$result = (' . $expression . ');' );
+
+        return $result;
     }
+
+    private function getValue($myPos){
+        $letter = $this->roman[$myPos];
+
+        return (int) $this->romanInteger[$letter];
+    }
+
+    private function getValueOnMyRight($myPos){
+        $rightPos = $myPos + 1;
+        $result = null;
+
+        if ($rightPos < $this->len) {
+            $letter = $this->roman[$rightPos];
+            $result = (int) $this->romanInteger[$letter];
+        }
+
+        return $result;
+    }
+
 }
