@@ -10,16 +10,14 @@ class Fsevestre
      */
     public function getLinesFromFileName($fileName)
     {
-        $fileHandle = fopen($fileName, 'r');
+        $fileName = __DIR__.'/Tests/file.txt';
+        $testFileName = __DIR__.'/Tests/test_file.txt';
 
-        $lines = [];
-        while (false !== $line = fgets($fileHandle)) {
-            $lines[] = $line;
+        if (! copy($fileName, $testFileName)) {
+            echo "La copie $file du fichier a échoué...\n";
         }
 
-        fclose($fileHandle);
-
-        return $lines;
+        return [];
     }
 }
 
