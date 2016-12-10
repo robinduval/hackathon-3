@@ -52,20 +52,11 @@ class Geo
      */
 
     private function computeDistance($lat1, $lng1, $lat2, $lng2, $cosDeg2RadLat1){
+        
+        $x = deg2rad( $lng1 - $lng2 ) * $cosDeg2RadLat1;
+        $y = deg2rad( $lat1 - $lat2 );
+        $dist = sqrt( $x*$x + $y*$y );
 
-        $earth_radius = 6378137; // Earth Radius is 6378.137 km
-        $rlo1 = deg2rad($lng1);
-        $rla1 = deg2rad($lat1);
-        $rlo2 = deg2rad($lng2);
-        $rla2 = deg2rad($lat2);
-        $dlo = ($rlo2 - $rlo1) / 2;
-        $dla = ($rla2 - $rla1) / 2;
-        $a =
-            (sin($dla) * sin($dla)) +
-            cos($rla1) * cos($rla2) *
-            (sin($dlo) * sin($dlo));
-        $d = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        return ($earth_radius * $d) / pow(10, 3);
+        return $dist;
     }
 };
